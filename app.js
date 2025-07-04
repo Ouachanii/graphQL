@@ -62,21 +62,47 @@ if (window.location.pathname.endsWith('index.html')) {
                 id
                 login
                 email
-                xp
-                grade
             }
         }`;
         const token = getToken();
         const data = await fetchGraphQL(token, query);
+        console.log('GraphQL response:', data); // Debug log
+        if (!data || !data.user) {
+            let userStats = document.getElementById('user-stats');
+            if (userStats) {
+                userStats.innerHTML = '<p style="color:red">Failed to load user data.</p>';
+            }
+            return;
+        }
         let userInfo = document.getElementById('user-info');
-        if (userInfo && data && data.user) {
+        if (userInfo) {
             userInfo.innerHTML = `
                 <p><strong>Login:</strong> ${data.user.login}</p>
                 <p><strong>Email:</strong> ${data.user.email}</p>
-                <p><strong>XP:</strong> ${data.user.xp}</p>
-                <p><strong>Grade:</strong> ${data.user.grade}</p>
             `;
         }
+        // Render Level graph (inspired by mmihit/GraphQl)
+        // Ensure the required elements exist in the DOM
+        let statsSection = document.getElementById('stats');
+        if (statsSection && !document.getElementById('drawing-level')) {
+            // Add missing containers if not present
+            const drawingDiv = document.createElement('div');
+            drawingDiv.id = 'drawing-level';
+            drawingDiv.style.margin = '2rem 0';
+            statsSection.appendChild(drawingDiv);
+            const xpTextDiv = document.createElement('div');
+            xpTextDiv.id = 'xp-text';
+            statsSection.appendChild(xpTextDiv);
+        }
+        if (document.getElementById('drawing-level') && document.getElementById('xp-text')) {
+            import('./utils/svg-graphs.js').then(({ LevelHelper }) => {
+                new LevelHelper(data.user.grade, data.user.xp).createGraph();
+            });
+        }
+        // Optionally, render Audit graph if you have the data and HTML elements
+        // import('./utils/svg-graphs.js').then(({ AuditHelper }) => {
+        //     new AuditHelper(done, received, bonus, ratio).createGraph();
+        // });
     }
     fetchProfile();
 }
