@@ -1,4 +1,3 @@
-// Handles authentication logic (login, logout, token storage)
 
 export function saveToken(token) {
     localStorage.setItem('token', token);
