@@ -1,6 +1,6 @@
 import { saveToken, getToken, clearToken } from './auth.js';
 import { fetchGraphQL } from './graphql.js';
-import { createRatioGraph } from './svg-graphs.js';
+import { createRatioGraph, createSkillsGraph } from './svg-graphs.js';
 
 // Login logic
 if (document.getElementById('login-form')) {
@@ -46,19 +46,8 @@ if (document.getElementById('login-form')) {
 }
 
 // Dashboard logic
-if (window.location.pathname.endsWith('index.html')) {
-    if (!getToken()) {
-        window.location.href = 'login.html';
-    }
-    let logoutBtn = document.getElementById('logout-btn');
-    if (logoutBtn) {
-        logoutBtn.onclick = () => {
-            clearToken();
-            window.location.href = 'login.html';
-        };
-    }
-    async function fetchProfile() {
-        const query = `
+
+const query = `
         query {
             
             user {
@@ -85,7 +74,22 @@ if (window.location.pathname.endsWith('index.html')) {
                 path
             }
         }`;
-        const token = getToken();
+
+const token = getToken();
+
+if (window.location.pathname.endsWith('index.html')) {
+    if (!getToken()) {
+        window.location.href = 'login.html';
+    }
+    let logoutBtn = document.getElementById('logout-btn');
+    if (logoutBtn) {
+        logoutBtn.onclick = () => {
+            clearToken();
+            window.location.href = 'login.html';
+        };
+    }
+    async function fetchProfile() {
+        
         if (!token) {
             console.error('No token found, redirecting to login.');
             window.location.href = 'login.html';
@@ -146,7 +150,81 @@ if (window.location.pathname.endsWith('index.html')) {
             `;
         }
      
-        createRatioGraph(data.user[0].totalUp * 100, data.user[0].totalDown * 100);
+        createRatioGraph(data.user[0].totalUp / 1000, data.user[0].totalDown /1000);
+        createSkillsGraph()
     }
     fetchProfile();
+}
+
+export async function transactSkill(){
+    let obj1 ={
+        amount: 0,
+        createdAt: "",
+        id: 0,
+        objectId: 0,
+        path: "",
+        type: "",
+        userId: 0
+    }
+    let obj = {
+        go : obj1,
+        js : obj1,
+        algo : obj1,
+        front : obj1,
+        back : obj1,
+        prog : obj1
+    }
+
+    const data = await fetchGraphQL(token, query);
+
+    for(let i = 0; i < data.transaction.length-1; i++){
+        let transact = data.transaction[i].type;
+        switch (transact){
+            case "skill_prog":
+                if (data.transaction[i].amount > obj.prog.amount){
+                    obj.prog = data.transaction[i];
+                }
+                break
+            
+            case "skill_go":
+                if (data.transaction[i].amount > obj.go.amount){
+                    obj.go = data.transaction[i];
+                }
+                break
+
+            case "skill_js":
+                if (data.transaction[i].amount > obj.js.amount){
+                    obj.js = data.transaction[i];
+                }
+                break
+
+            case "skill_front-end":
+                if (data.transaction[i].amount > obj.front.amount){
+                    obj.front = data.transaction[i];
+                }
+                break
+
+            case "skill_back-end":
+                if (data.transaction[i].amount > obj.back.amount){
+                    obj.back = data.transaction[i];
+                }
+                break
+
+            case "skill_algo":
+                if (data.transaction[i].amount > obj.algo.amount){
+                    obj.algo = data.transaction[i];
+                }
+                break
+            default:
+                break
+        }
+    }
+    let array = [];
+    array.push(obj.algo);
+    array.push(obj.back);
+    array.push(obj.front);
+    array.push(obj.go);
+    array.push(obj.js);
+    array.push(obj.prog);
+    return array
 }
