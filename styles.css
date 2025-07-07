@@ -2,6 +2,36 @@ body {
     font-family: Arial, sans-serif;
     background: #f5f3f3;
 }
+/* /////////// */
+#user-info {
+    width: 450px;
+    margin: 30px auto;
+    padding: 20px;
+    background-color: #f4f4f4;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    font-family: Arial, sans-serif;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#user-info h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+#user-info p {
+    margin: 10px 0;
+    font-size: 15px;
+    color: #444;
+}
+
+#user-info strong {
+    display: inline-block;
+    width: 120px;
+    color: #222;
+}
+
 .login-header {
     display: flex;
     justify-content: center;
@@ -11,7 +41,7 @@ body {
     font-family: 'Times New Roman', Times, serif;
     font-weight: 900;
     font-style: oblique;
-    background: #5fcdd1;
+    background: lightskyblue;
     color: #fff;
     position: absolute;
     top: 0;
@@ -19,6 +49,43 @@ body {
     right: 0;
     z-index: 1000;
 }
+
+
+/* ///////// */
+  #user-info,
+  #user-progress {
+    width: 450px;
+    margin: 30px auto;
+    padding: 20px;
+    background-color: #f4f4f4;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    font-family: Arial, sans-serif;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  #user-info h2,
+  #user-progress h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+  }
+
+  #user-info p,
+  #user-progress p {
+    margin: 10px 0;
+    font-size: 15px;
+    color: #444;
+  }
+
+  #user-info strong,
+  #user-progress strong {
+    display: inline-block;
+    width: 120px;
+    color: #222;
+  }
+
+/* //////////// */
 .home-header {
     display: flex;
     justify-content: space-around;
@@ -27,7 +94,7 @@ body {
     font-family: 'Times New Roman', Times, serif;
     font-weight: 900;
     font-style: oblique;
-    background: #5fcdd1;
+    background: lightskyblue;
     color: #fff;
     position: absolute;
     padding-left: 2rem;
@@ -36,6 +103,7 @@ body {
     right: 0;
     z-index: 1000;
 }
+
 form {
     display: flex;
     flex-direction: column;
@@ -45,15 +113,18 @@ form {
     background: #fff;
     padding: 2rem;
     border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
-input[type="text"], input[type="password"] {
+
+input[type="text"],
+input[type="password"] {
     width: 100%;
     padding: 0.5rem;
     margin: 0.5rem 0 1rem 0;
     border: 1px solid #ccc;
     border-radius: 4px;
 }
+
 button {
     display: flex;
     justify-content: center;
@@ -68,6 +139,7 @@ button {
     cursor: pointer;
     margin: 0 auto;
 }
+
 #logout-btn {
     background: red;
     width: 100px;
@@ -78,16 +150,205 @@ button {
     cursor: pointer;
     margin-right: 1rem;
 }
+
 button:hover {
     background: #0056b3;
 }
+
 .error {
     color: red;
     margin-top: 1rem;
 }
+
 main {
     margin: 6rem auto;
-    background: #fff;
+    background: #eceaeabd;
     padding: 2rem;
     border-radius: 8px;
+}
+
+#profile {
+    display: flex;
+    justify-content: space-between;
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 10px auto;
+    width: auto;
+}
+
+#user-graphs {
+    background-color: #fff;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    flex-direction: row;
+    gap: 20px;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 10px auto;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.graphs-titles {
+    text-align: center;
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+#audit-ratio {
+    background-color: lightskyblue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 20px auto;
+    border-radius: 6px;
+}
+
+#audit-ratio svg {
+    width: 700px;
+    height: 250px;
+}
+
+#skills {
+    background-color: lightskyblue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 20px auto;
+    border-radius: 6px;
+}
+
+#skills svg {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@media screen and (max-width: 1360px) {
+
+    #audit-ratio svg {
+        width: 520px !important;
+        height: 250px !important;
+    }
+
+    #skills svg {
+        width: 500px !important;
+        height: 500px !important;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+}
+
+@media (max-width: 1200px) {
+    main {
+        padding: 1rem;
+    }
+
+    #user-graphs {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding: 10px;
+        width: 100%;
+    }
+
+    #user-graphs>div {
+        width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
+    }
+
+    #profile {
+        flex-direction: column;
+        padding: 10px;
+    }
+
+    #audit-ratio svg {
+        width: 700px !important;
+        height: 250px !important;
+    }
+
+    #skills svg {
+        width: 90% !important;
+        height: 500px !important;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .login-header,
+    .home-header {
+        font-size: 1rem;
+        padding: 0.5rem;
+    }
+
+    main {
+        margin: 3rem auto;
+        padding: 0.5rem;
+    }
+
+    #profile {
+        flex-direction: column;
+        padding: 5px;
+    }
+
+    #user-graphs {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        padding: 5px;
+        width: 100%;
+    }
+
+    #user-graphs>div {
+        width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
+    }
+
+    .graphs-titles {
+        font-size: 1.1rem;
+    }
+
+    #audit-ratio,
+    #skills {
+        width: 100%;
+        min-width: 0;
+        overflow-x: auto;
+    }
+
+    #audit-ratio svg,
+    #skills svg {
+        width: 100% !important;
+        min-width: 250px;
+        max-width: 100vw;
+        height: 120px !important;
+        display: block;
+    }
+
+    form {
+        margin: 3rem auto;
+        padding: 1rem;
+        max-width: 95vw;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+        font-size: 1rem;
+    }
+
+    button,
+    #logout-btn {
+        width: 100%;
+        font-size: 1rem;
+    }
 }

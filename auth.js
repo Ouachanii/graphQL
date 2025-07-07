@@ -1,12 +1,11 @@
-
-export function saveToken(token) {
-    localStorage.setItem('token', token);
+export function saveJWT(jwt) {
+    localStorage.setItem('jwt', jwt);
 }
 
-export function getToken() {
-    return localStorage.getItem('token');
+export function getJWT() {
+    return localStorage.getItem('jwt');
 }
 
-export function clearToken() {
-    localStorage.removeItem('token');
+export function clearJWT() {
+    localStorage.removeItem('jwt');
 }

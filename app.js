@@ -1,4 +1,4 @@
-import { saveToken, getToken, clearToken } from './auth.js';
+import { saveJWT, getJWT, clearJWT } from './auth.js';
 import { fetchGraphQL } from './graphql.js';
 import { createRatioGraph, createSkillsGraph } from './svg-graphs.js';
 
@@ -33,8 +33,16 @@ if (document.getElementById('login-form')) {
                 errorDiv.textContent = 'Login failed: ' + (data && data.error ? data.error : res.statusText);
                 return;
             }
-            if (data) {
-                saveToken(data);
+            if (data && data) {
+                // If the response is an object with a jwt property, save only the jwt string
+                if (typeof data === 'object' && data.jwt) {
+                    saveJWT(data.jwt);
+                } else if (typeof data === 'string') {
+                    saveJWT(data);
+                } else {
+                    // fallback: try to save as string
+                    saveJWT(JSON.stringify(data));
+                }
                 window.location.href = 'index.html';
             } else {
                 errorDiv.textContent = 'Login failed: No token received.';
@@ -75,16 +83,16 @@ const query = `
             }
         }`;
 
-const token = getToken();
+const token = getJWT();
 
 if (window.location.pathname.endsWith('index.html')) {
-    if (!getToken()) {
+    if (!getJWT()) {
         window.location.href = 'login.html';
     }
     let logoutBtn = document.getElementById('logout-btn');
     if (logoutBtn) {
         logoutBtn.onclick = () => {
-            clearToken();
+            clearJWT();
             window.location.href = 'login.html';
         };
     }
@@ -95,9 +103,9 @@ if (window.location.pathname.endsWith('index.html')) {
             window.location.href = 'login.html';
             return;
         }
-        console.log('Fetching profile with token:', token); // Debug log
+        // console.log('Fetching profile with token:', token); // Debug log
         const data = await fetchGraphQL(token, query);
-        console.log('GraphQL response:', data); // Debug log
+        // console.log('GraphQL response:', data); // Debug log
         if (!data || !data.user) {
             let userStats = document.getElementById('user-stats');
             if (userStats) {
@@ -105,8 +113,8 @@ if (window.location.pathname.endsWith('index.html')) {
             }
             return;
         }
-        console.log('User data:', data.user[0]);
-        console.log('User transactions:', data.transaction);
+        // console.log('User data:', data.user[0]);
+        // console.log('User transactions:', data.transaction);
         let userInfo = document.getElementById('user-info');
         let userProgress = document.getElementById('user-progress');
         if (userInfo) {
@@ -142,8 +150,7 @@ if (window.location.pathname.endsWith('index.html')) {
             userProgress.innerHTML = `
                 <h2>User Progress</h2>
                 <p><strong>Level:</strong> ${level}</p>
-                <p><strong>Total XP:</strong> ${xp}</p>
-                <p><strong>Transactions:</strong> ${data.user[0].login}</p>
+                <p><strong>Total XP:</strong> ${(xp/1000).toFixed(2)}</p>
                 <p><strong>Audit ratio:</strong> ${auditRatio.toFixed(2) || 0}</p>
                 <p><strong>Total Up:</strong> ${data.user[0].totalUp}</p>
                 <p><strong>Total Down:</strong> ${data.user[0].totalDown}</p>
