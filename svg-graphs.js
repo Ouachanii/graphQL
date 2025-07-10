@@ -2,6 +2,11 @@ export function createRatioGraph(doneWidth, receiveWidth) {
     const container = document.getElementById('audit-ratio');
     // Clear previous SVG if any
     container.innerHTML = '';
+    const header = document.createElement("h3");
+    header.textContent= `Audit ratio`;
+    header.className = "graphs-titles";
+    header.style.marginBottom = "60px";
+    container.appendChild(header);
     let maxBarWidth = container.offsetWidth;
 
     const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
@@ -50,14 +55,14 @@ export function createRatioGraph(doneWidth, receiveWidth) {
     doneText.setAttribute("y", "90");
     doneText.setAttribute("fill", "green");
     doneText.setAttribute("font-size", "20px");
-    doneText.textContent = `Done: ${doneWidth} kb`;
+    doneText.textContent = `Done: ${(doneWidth/1000).toFixed(3)} Mb`;
 
     const receiveText = document.createElementNS("http://www.w3.org/2000/svg", "text");
     receiveText.setAttribute("x", "10");
     receiveText.setAttribute("y", "180");
     receiveText.setAttribute("fill", "red");
     receiveText.setAttribute("font-size", "20px");
-    receiveText.textContent = `Received: ${receiveWidth} kb`;
+    receiveText.textContent = `Received: ${(receiveWidth/1000).toFixed(3)} Mb`;
 
     svg.appendChild(done);
     svg.appendChild(receive);
@@ -82,7 +87,7 @@ export async function createSkillsGraph() {
     let data = await transactSkill();
 
     const yourSkills = document.createElement("h3");
-    yourSkills.textContent= `Your skills:`;
+    yourSkills.textContent= `Your skills`;
     yourSkills.className = "graphs-titles";
     document.getElementById("skills").appendChild(yourSkills);
 
@@ -95,7 +100,7 @@ export async function createSkillsGraph() {
     const height = 400;
     const centerX = width / 2;
     const centerY = height / 2;
-    const radius = Math.min(width, height) / 2 - 20;
+    const radius = Math.min(width, height) / 2 - 20; // 20 for padding
 
     // create line progress
     data.forEach((_, index) => {
@@ -103,7 +108,7 @@ export async function createSkillsGraph() {
         const x = centerX + radius * Math.cos(angle);
         const y = centerY + radius * Math.sin(angle);
 
-        // Création de la ligne jusqu'à 100%
+        // Création de la ligne
         const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
         line.setAttribute("x1", centerX);
         line.setAttribute("y1", centerY);

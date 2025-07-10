@@ -2,7 +2,6 @@ import { saveJWT, getJWT, clearJWT } from './auth.js';
 import { fetchGraphQL } from './graphql.js';
 import { createRatioGraph, createSkillsGraph } from './svg-graphs.js';
 
-// Login logic
 if (document.getElementById('login-form')) {
     document.getElementById('login-form').addEventListener('submit', async function (e) {
         e.preventDefault();
@@ -12,7 +11,6 @@ if (document.getElementById('login-form')) {
         errorDiv.textContent = '';
         // Real authentication: get token from GraphQL API
         try {
-            // Try Basic Auth header for login
             const basicAuth = btoa(username + ':' + password);
             const res = await fetch('https://learn.zone01oujda.ma/api/auth/signin', {
                 method: 'POST',
@@ -34,13 +32,11 @@ if (document.getElementById('login-form')) {
                 return;
             }
             if (data && data) {
-                // If the response is an object with a jwt property, save only the jwt string
                 if (typeof data === 'object' && data.jwt) {
                     saveJWT(data.jwt);
                 } else if (typeof data === 'string') {
                     saveJWT(data);
                 } else {
-                    // fallback: try to save as string
                     saveJWT(JSON.stringify(data));
                 }
                 window.location.href = 'index.html';
@@ -53,8 +49,7 @@ if (document.getElementById('login-form')) {
     });
 }
 
-// Dashboard logic
-
+// GraphQL query to fetch user data and transactions
 const query = `
         query {
             
@@ -150,14 +145,14 @@ if (window.location.pathname.endsWith('index.html')) {
             userProgress.innerHTML = `
                 <h2>User Progress</h2>
                 <p><strong>Level:</strong> ${level}</p>
-                <p><strong>Total XP:</strong> ${(xp/1000).toFixed(2)}</p>
-                <p><strong>Audit ratio:</strong> ${auditRatio.toFixed(2) || 0}</p>
-                <p><strong>Total Up:</strong> ${data.user[0].totalUp}</p>
-                <p><strong>Total Down:</strong> ${data.user[0].totalDown}</p>
+                <p><strong>Total XP:</strong> ${(xp/1000000).toFixed(3)} Mb</p>
+                <p><strong>Audit ratio:</strong> ${auditRatio.toFixed(2)}</p>
+                <p><strong>Total Up:</strong> ${(data.user[0].totalUp/1000000).toFixed(3)} Mb</p>
+                <p><strong>Total Down:</strong> ${(data.user[0].totalDown/1000000).toFixed(3)} Mb</p>
             `;
         }
      
-        createRatioGraph(data.user[0].totalUp / 1000, data.user[0].totalDown /1000);
+        createRatioGraph(data.user[0].totalUp /1000, data.user[0].totalDown /1000);
         createSkillsGraph()
     }
     fetchProfile();
