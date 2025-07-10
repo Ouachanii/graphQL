@@ -181,7 +181,6 @@ main {
     background-color: #fff;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    flex-direction: row;
     gap: 20px;
     padding: 20px;
     border-radius: 10px;
@@ -205,12 +204,13 @@ main {
     flex-direction: column;
     margin: 20px auto;
     border-radius: 6px;
+    width: 100%;
 }
 
-#audit-ratio svg {
+/* #audit-ratio svg {
     width: 700px;
     height: 250px;
-}
+} */
 
 #skills {
     background-color: lightskyblue;
@@ -227,7 +227,34 @@ main {
     justify-content: center;
     align-items: center;
 }
+@media (max-width: 1200px) {
+    #user-graphs {
+        grid-template-rows: 1fr 1fr;
+        grid-template-columns: 1fr;
+    }
 
+    #skills svg {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+}
+@media (max-width: 600px) {
+    #profile {
+        flex-direction: column;
+        padding: 10px;
+    }
+    main {
+        margin: 10px auto;
+        padding: 10px;
+    }
+    #user-graphs {
+        padding: 10px;
+        width: 90%;
+    }
+}
+/* 
 @media screen and (max-width: 1360px) {
 
     #audit-ratio svg {
@@ -351,4 +378,4 @@ main {
         width: 100%;
         font-size: 1rem;
     }
-}
+} */

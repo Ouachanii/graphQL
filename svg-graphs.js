@@ -1,30 +1,30 @@
-export function createRatioGraph(doneWith, receiveWith) {
+export function createRatioGraph(doneWidth, receiveWidth) {
     const container = document.getElementById('audit-ratio');
     // Clear previous SVG if any
     container.innerHTML = '';
+    let maxBarWidth = container.offsetWidth;
 
     const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-    svg.setAttribute("width", "700");
+    svg.setAttribute("width", maxBarWidth);
     svg.setAttribute("height", "250");
 
     let doneWt = 0;
     let receiveWt = 0;
-    let diff = 0;
-    const maxBarWidth = container.offsetWidth ? container.offsetWidth * 0.8 : 560;
+    maxBarWidth = maxBarWidth * 0.9;
 
     // Prevent division by zero and negative widths
-    if (receiveWith === 0) {
+    if (receiveWidth === 0) {
         doneWt = maxBarWidth;
         receiveWt = 0;
-    } else if (doneWith === 0) {
+    } else if (doneWidth === 0) {
         receiveWt = maxBarWidth;
         doneWt = 0;
-    } else if (doneWith >= receiveWith) {
+    } else if (doneWidth >= receiveWidth) {
         doneWt = maxBarWidth;
-        receiveWt = Math.max(0, maxBarWidth * (receiveWith / doneWith));
+        receiveWt = Math.max(0, maxBarWidth * (receiveWidth / doneWidth));
     } else {
         receiveWt = maxBarWidth;
-        doneWt = Math.max(0, maxBarWidth * (doneWith / receiveWith));
+        doneWt = Math.max(0, maxBarWidth * (doneWidth / receiveWidth));
     }
 
     const done = document.createElementNS("http://www.w3.org/2000/svg", "rect");
@@ -50,14 +50,14 @@ export function createRatioGraph(doneWith, receiveWith) {
     doneText.setAttribute("y", "90");
     doneText.setAttribute("fill", "green");
     doneText.setAttribute("font-size", "20px");
-    doneText.textContent = `Done: ${doneWith} kb`;
+    doneText.textContent = `Done: ${doneWidth} kb`;
 
     const receiveText = document.createElementNS("http://www.w3.org/2000/svg", "text");
     receiveText.setAttribute("x", "10");
     receiveText.setAttribute("y", "180");
     receiveText.setAttribute("fill", "red");
     receiveText.setAttribute("font-size", "20px");
-    receiveText.textContent = `Received: ${receiveWith} kb`;
+    receiveText.textContent = `Received: ${receiveWidth} kb`;
 
     svg.appendChild(done);
     svg.appendChild(receive);
@@ -69,7 +69,7 @@ export function createRatioGraph(doneWith, receiveWith) {
     title.setAttribute("y", "220");
     title.setAttribute("fill", "yellow");
     title.setAttribute("font-size", "24px");
-    const ratio = receiveWith === 0 ? 0 : doneWith / receiveWith;
+    const ratio = receiveWidth === 0 ? 0 : doneWidth / receiveWidth;
     title.textContent = `Your Audit Ratio: ${ratio.toFixed(2)}`;
     svg.appendChild(title);
     container.appendChild(svg);
@@ -79,7 +79,7 @@ export function createRatioGraph(doneWith, receiveWith) {
 import { transactSkill } from "./app.js";
 
 export async function createSkillsGraph() {
-    let data = await transactSkill(); // Fix: await and async
+    let data = await transactSkill();
 
     const yourSkills = document.createElement("h3");
     yourSkills.textContent= `Your skills:`;
@@ -98,7 +98,7 @@ export async function createSkillsGraph() {
     const radius = Math.min(width, height) / 2 - 20;
 
     // create line progress
-    data.forEach((value, index) => {
+    data.forEach((_, index) => {
         const angle = (Math.PI * 2 * index) / data.length;
         const x = centerX + radius * Math.cos(angle);
         const y = centerY + radius * Math.sin(angle);
