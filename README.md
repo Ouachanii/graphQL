@@ -18,14 +18,17 @@ A modern, responsive personal profile dashboard built with HTML, JavaScript, and
 
 ## 📦 Project Structure
 ```
-├── app.js           # Main app logic
-├── auth.js          # JWT authentication helpers
-├── graphql.js       # GraphQL query logic
-├── svg-graphs.js    # SVG graph rendering
-├── index.html       # Dashboard page
-├── login.html       # Login page
-├── styles.css       # App styles
-└── README.md        # Project documentation
+├── JS/
+│   ├── app.js           # Main app logic
+│   ├── auth.js          # JWT authentication helpers
+│   ├── graphql.js       # GraphQL query logic
+│   └── svg-graphs.js    # SVG graph rendering
+├── HTML/
+│   ├── index.html       # Dashboard page
+│   └── login.html       # Login page
+├── CSS/
+│   └── styles.css       # App styles
+└── README.md            # Project documentation
 ```
 
 ## ⚡ Getting Started
